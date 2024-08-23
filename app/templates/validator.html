@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Home - Portfolio Manager{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h2 class="display-6">Some info about the input value!</h2>    
+        {% if report %}
+        <p class="lead">Your email is already Registered , username had uppercase, lowercase and number at the end , Well Done!!</p>
+        {% else %}
+        <ul>
+
+            {% if not user_exists %}
+                <li>This email is NOT registered!!!</li>
+            {% endif %}
+
+            {% if not upper %}
+                <li>You did not use an <em>upper</em> case letter!</li>
+            {% endif %}
+
+            {% if not lower %}
+                <li>You did not use an <em>lower</em> case letter!</li>
+            {% endif %}
+
+            {% if not num_end %}
+                <li>You did not use a <em>number</em> at the end!</li>
+            {% endif %}
+
+            {% if user_exists %}
+            <li>This email is registered!!!</li>
+            {% endif %}
+
+            {% if upper %}
+                <li>You did use an <em>upper</em> case letter!</li>
+            {% endif %}
+
+            {% if lower %}
+                <li>You did use an <em>lower</em> case letter!</li>
+            {% endif %}
+
+            {% if num_end %}
+                <li>You did use a <em>number</em> at the end!</li>
+            {% endif %}
+
+            
+        </ul>
+        {% endif %}
+</div>
+{% endblock %}

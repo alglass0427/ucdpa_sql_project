@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Sign Up - Portfolio Manager{% endblock %}
+{% block content %}
+<!-- <h1>Sign Up</h1> -->
+
+
+<div class="container-sm container_add mt-4">
+
+    <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+            <button class="btn btn-primary w-100 " type="button" data-toggle="collapse" data-target="#validate-section" aria-expanded="false" aria-controls="validate-section">Check if already Registered!</button>
+        </div>    
+        <div class="col-md-6">
+            <button class="btn btn-primary w-100 " type="button" data-toggle="collapse" data-target="#signup-section" aria-expanded="false" aria-controls="signup-section">Sign Up Form</button>
+        </div>
+    </div>
+</div>
+    
+<!-- Validate if User exists and Some practive validations -->
+
+<div class="container-sm container_add mt-4 collapse" id="validate-section">
+        
+        <form id = "validate"  action="{{ url_for('validator') }}">
+            
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-8 col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="username" placeholder="User Name" name="username" >
+                        <label for="username">Email</label>
+                        <small></small>
+                    </div>
+                </div>
+            
+                <div class="col-lg-4  col-md-6 mt-0  align-items-center ">
+                    <button class = "btn btn-primary w-100" type="submit">Validate</button>
+                </div>
+            </div>
+        </form>
+</div>
+
+<div class="container-sm container_add mt-4 collapse" id="signup-section">
+    <h1 class="h3 h2-sm h1-md d-flex d-block justify-content-center align-items-center">Register</h1>
+    <form id = "signUpForm" method="POST" autocomplete="off" action="{{ url_for('signup') }}">        
+<!-- Row 1 -->
+        <div class="row g-3 align-items-center">
+            <!-- <div class="row g-3 align-items-center"> -->
+            <div class="col-lg-6 col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="fullname" placeholder="Full Name" name="fullname" >
+                    <label for="fullname">Full Name</label>
+                    <small></small>
+                </div>
+            </div>
+        
+            <div class="col-lg-6 col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="dob" name="dob">
+                    <label for="dob">Date of Birth</label>
+                    <small></small>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 form-floating ">
+                <select class=" form-select mb-3 pt-0 pb-0" aria-label="Gender-select" name = "gender" id="gender">
+                    <option selected>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+                <small></small>
+            </div>
+        
+
+        <!-- <div class="row g-3 align-items-center"> -->
+            <div class="col-lg-6 col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
+                    <label for="email">Email address</label>
+                    <small></small>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                    <label for="password">Password</label>
+                    <small ></small>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="color" class="form-control" id="fav_color" placeholder="Pick a colour!" name="fav_color">
+                    <label for="fav_color">Favourite  Colour</label>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+<!-- Row 2 -->
+        <div class="row g-3 align-items-center">
+            <div class="col-lg-6 col-md-12">
+                <button class="btn btn-primary w-100" type="submit">Submit</button>
+            </div>
+        </div>
+    </form>   
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/signup.js') }}"></script>
+{% endblock scripts %}

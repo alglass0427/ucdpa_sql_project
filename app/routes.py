@@ -7,8 +7,9 @@ import functions.stock_functions as stock_func    ###Functions file in functions
 import functions.mail_functions as mail_func    ###Functions file in functions folder to seperate functions from app.py
 # import os
 # import json
-from .models import UserDetails, Portfolio , Asset, portfolio_assets # Import models
+from .models import UserDetails, Portfolio , Asset, PortfolioAsset # Import models
 from . import db  # Import the db instance
+from sqlalchemy.exc import IntegrityError
 # from flask_login import login_user
 
 ###Main App below
@@ -134,24 +135,31 @@ def dashboard_1():
     portfolios = Portfolio.query.filter_by(user_id=user_id).all()
     stocks_with_prices = []
     for portfolio in portfolios:
-        for asset in portfolio.assets:
-            stock_code = asset.ticker
+        # Iterate over all assets associated with the portfolio
+        for portfolio_asset in portfolio.portfolio_assets:
+            # Get the stock ticker from the related Asset object
+            stock_code = portfolio_asset.asset.ticker
+            print(stock_code,"THIS IS ITHE STOCK CODE")
             # Fetch the stock price
             stock_price = stock_func.get_stock_price(stock_code, yf_flag)
+            
             # Fetch additional data stored in the portfolio_assets table
-            asset_data = db.session.query(portfolio_assets).filter_by(portfolio_id=portfolio.id, asset_id=asset.id).all()
-            ###removed To get multiple purchases 
-            # asset_data = db.session.query(portfolio_assets).filter_by(portfolio_id=portfolio.id, asset_id=asset.id).first()
-            for asset in asset_data:
-                stocks_with_prices.append({
-                    'stock_code': stock_code,
-                    'buy_price': asset.buy_price,
-                    'no_of_shares': asset.no_of_shares,
-                    'stop_loss': asset.stop_loss,
-                    'cash_out': asset.cash_out,
-                    'comment': asset.comment,
-                    'latest_price': stock_price
-                })  
+            # All relevant data is now in the `portfolio_asset` object itself
+            # Create a dictionary to store all relevant information
+            stock_data = {
+                'stock_code': stock_code,
+                'buy_price': portfolio_asset.buy_price,
+                'no_of_shares': portfolio_asset.no_of_shares,
+                'latest_price': stock_price,
+                'stop_loss': portfolio_asset.stop_loss,
+                'cash_out': portfolio_asset.cash_out,
+                'comment': portfolio_asset.comment
+            }
+
+            # Append this dictionary to the list
+            stocks_with_prices.append(stock_data)
+            
+            
 
     print(f"This is the Stock data passed to the Dashboard ::::: {stocks_with_prices} ")
 
@@ -160,12 +168,13 @@ def dashboard_1():
 # this will add the Stock then , update the list , 
 # then call dashboard_1 which will get the updated list and get the prices 
 
+@login_required
 @app.route('/add_stock', methods=['POST'])
 def add_stock():
     # EXISTING ------------------------
     print("INSIDE ADD STOCK")
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
+    # if 'user_id' not in session:
+    #     return redirect(url_for('login'))
     
     yf_flag = 'off'
     ##Change for loop
@@ -218,28 +227,78 @@ def add_stock():
             yf_flag = value
             print(f"Inside For  - {yf_flag}")
     # Now, create the insert statement using the dynamic_values dictionary
-    stmt = portfolio_assets.insert().values(**dynamic_values)
+    # stmt = PortfolioAsset.insert().values(**dynamic_values)
 
-    print(stmt)
-    db.session.execute(stmt)
-    db.session.commit()
+    # print(stmt)
+    # db.session.execute(stmt)
+    # db.session.commit()
+    if portfolio and asset:
+        portfolio_asset = PortfolioAsset(
+            portfolio_id=portfolio.id,
+            asset_id=asset.id,
+            buy_price=dynamic_values.get('buy_price'),
+            no_of_shares=dynamic_values.get('no_of_shares'),
+            stop_loss=dynamic_values.get('stop_loss'),
+            cash_out=dynamic_values.get('cash_out'),
+            comment=dynamic_values.get('comment')
+        )
+
+        # Add the new PortfolioAsset record to the session and commit
+        db.session.add(portfolio_asset)
+        try:
+            db.session.commit()
+            flash("Stock added to portfolio successfully.", "success")
+        except IntegrityError as e:
+            db.session.rollback()
+            flash(f"An error occurred while adding stock: {e}", "danger")
+        # else:
+        #     flash("Portfolio or asset not found.", "danger")
+
 
     flash(f'Stock {stock_code} added to your portfolio.', 'success')
 
     return redirect(url_for('dashboard_1', yf_flag=yf_flag))
 
+
+@login_required
 @app.route('/remove_stock/<string:stock_code>')
 def remove_stock(stock_code):
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    
-    username = session['email']
-    user_data = stock_func.load_user_portfolio(username)
+    user_id = session["user_id"]
+    email = session['email']
 
-    if stock_code in user_data:
-        user_data.pop(stock_code)
-        stock_func.save_user_portfolio(username, user_data)
+    # Fetch the user's portfolio
+    portfolio = Portfolio.query.filter_by(user_id=user_id).first()
+    print(f"Portfolio : {portfolio}")
+
+    if not portfolio:
+        flash(f"Portfolio for user {email} not found.", "danger")
+        return redirect(url_for('dashboard_1'))
+
+    # Fetch the asset corresponding to the stock code
+    asset = Asset.query.filter_by(ticker=stock_code).first()
+    print(f"ASSET : {asset}")
+
+    if not asset:
+        flash(f"Stock with ticker {stock_code} not found.", "danger")
+        return redirect(url_for('dashboard_1'))
+
+    # Fetch the specific PortfolioAsset entry
+    portfolio_asset = PortfolioAsset.query.filter_by(portfolio_id=portfolio.id, asset_id=asset.id).first()
+
+    if not portfolio_asset:
+        flash(f"Stock {stock_code} is not part of the portfolio.", "warning")
+        return redirect(url_for('dashboard_1'))
+
+    # Remove the PortfolioAsset entry
+    db.session.delete(portfolio_asset)
     
+    try:
+        db.session.commit()
+        flash(f"Stock {stock_code} successfully removed from the portfolio.", "success")
+    except IntegrityError as e:
+        db.session.rollback()
+        flash(f"An error occurred: {e}", "danger")
+
     return redirect(url_for('dashboard_1'))
 
 

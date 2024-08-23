@@ -157,7 +157,7 @@
 
 
                 <div class = "text-center mb-2">
-                    <a href="{{ url_for('remove_stock', stock_code=stock) }}" class="btn btn-danger mt-2 btn-sm">Remove</a>
+                    <a href="{{ url_for('remove_stock', stock_code=stock_data.stock_code) }}" class="btn btn-danger mt-2 btn-sm">Remove</a>
                 </div>
 
             </div>
@@ -193,7 +193,7 @@
                         <td>{{ stock_data.stop_loss }}</td>
                         <td>{{ stock_data.cash_out  }}</td>
                         <td>
-                            <a href="{{ url_for('remove_stock', stock_code=stock) }}" class="text-danger">Remove</a>
+                            <a href="{{ url_for('remove_stock', stock_code=stock_data.stock_code) }}" class="text-danger">Remove</a>
                         </td>
                     </tr>
                     {% endfor %}

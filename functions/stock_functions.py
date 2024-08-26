@@ -1,6 +1,10 @@
 import os
 import json
 import yfinance as yf
+import matplotlib.pyplot as plt
+import tempfile
+import datetime
+
 
 CURRENT_DIR =  os.getcwd()
 USER_DIRECTORY =  'user_directory.json'
@@ -10,15 +14,74 @@ ACCOUNTS_FILE = os.path.join(PERSISTENT_DIR, 'accounts', 'accounts.json')
 
 
 # Function to get stock price using Yahoo Finance API
-def get_stock_price(stock_code,yf_flag):
+def get_stock_price(stock_code,yf_flag,user_id,buy_price):
     # print(yf_flag)
     if yf_flag == 'on':
         try:
+            # ------------------------------------------------------------------------
+            # stock = yf.Ticker(stock_code)
+            # print(f"{stock.isin}")
+            # # stock.news
+            # stock_info = stock.history(period="1mo")  # Get the latest day of trading data
+            # print(f"{stock_info} :  Is the data")
+            # -------------------------------------------------------------------------
+            # Fetch stock data
+            # stock_code = 'AAPL'  # Example: Apple stock
+            # stock_code = 'AAPL'  # Example: Apple stock
+# Assuming your Flask app has a static directory
+            path = os.getcwd()
+            # parent_folder  =  os.path.abspath(os.path.join(path, os.pardir))
+
+            static_folder  = os.path.join(path, f"app/static/graphs/{user_id}")
+            if not os.path.exists(static_folder):
+                print(f"Creating user data folder at {static_folder}")
+                os.makedirs(static_folder)
+
+            # static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+            svg_filename = f"{stock_code}_performance.svg"
+            svg_file_path = os.path.join(static_folder, svg_filename)
+
+            # Fetch stock data
+
             stock = yf.Ticker(stock_code)
-            print(f"{stock.isin}")
-            # stock.news
-            stock_info = stock.history(period="1d")  # Get the latest day of trading data
-            print(f"{stock_info} :  Is the data")
+
+            # Get historical data for the past month
+            stock_info = stock.history(period="1mo")
+
+            # Input buy price (manually specified)
+            buy_price = buy_price  # Example: You bought the stock at $150
+
+            # Calculate the moving average (optional)
+            stock_info['20 Day MA'] = stock_info['Close'].rolling(window=20).mean()
+
+            # Create a plot
+            plt.figure(figsize=(14, 7))
+
+            # Plot the closing price
+            plt.plot(stock_info.index, stock_info['Close'], label='Closing Price', color='blue')
+
+            # Plot the 20-day moving average
+            plt.plot(stock_info.index, stock_info['20 Day MA'], label='20 Day MA', color='orange')
+
+            # Plot the buy price as a horizontal benchmark line
+            plt.axhline(y=buy_price, color='green', linestyle='--', label=f'Buy Price (${buy_price})')
+            today = datetime.date.today()
+            
+            # Add labels and title
+            plt.title(f'{stock_code} Stock Performance - Last 1 Month - As of {today}')
+            plt.xlabel('Date')
+            plt.ylabel('Price')
+            plt.legend()
+
+            # Save the plot to the static directory as an SVG
+            plt.savefig(svg_file_path, format='svg')
+
+            # Close the plot
+            plt.close()
+
+            print(f"SVG file saved at: {svg_file_path}")
+
+
             if not stock_info.empty:
                 print(f"Returned to dashboard : {stock_code},{round(stock_info['Close'].iloc[-1], 2)},{stock.isin}")
                 return (stock_code,round(stock_info['Close'].iloc[-1], 2),stock.isin)  # Get the last closing price

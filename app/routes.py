@@ -115,6 +115,7 @@ def logout():
 @login_required
 def dashboard_1():
     yf_flag = request.args.get('yf_flag', 'off') 
+    svg_filename = ""
     # Check if user is logged in
     if 'user_id' not in session:
         flash('Please log in to access the dashboard.', 'warning')
@@ -141,7 +142,8 @@ def dashboard_1():
             stock_code = portfolio_asset.asset.ticker
             print(stock_code,"THIS IS ITHE STOCK CODE")
             # Fetch the stock price
-            stock_price = stock_func.get_stock_price(stock_code, yf_flag)
+            stock_price = stock_func.get_stock_price(stock_code, yf_flag,user_id = session['user_id'], buy_price = portfolio_asset.buy_price )
+            # stock_price = stock_func.get_stock_price(stock_code, yf_flag )
             
             # Fetch additional data stored in the portfolio_assets table
             # All relevant data is now in the `portfolio_asset` object itself
@@ -158,12 +160,20 @@ def dashboard_1():
 
             # Append this dictionary to the list
             stocks_with_prices.append(stock_data)
+            import os
+            path = os.getcwd()
+            print(path)
+            static_folder  = os.path.join(path, f"app/static/graphs/{user_id}")
+            svg_filename = f"{stock_code}_performance.svg"
+            svg_relative_path = f"graphs/{user_id}/{svg_filename}"
+            print(f" This is the SVG fILE: '{svg_filename}'")
             
-            
-
+    
     print(f"This is the Stock data passed to the Dashboard ::::: {stocks_with_prices} ")
-
-    return render_template('dashboard_1.html', username=user.username, stocks=stocks_with_prices)
+    print (f"This is the SVG File NAME :  {svg_filename}")
+    if svg_filename == "":
+        svg_relative_path = "graphs/dummy_image.jfif"
+    return render_template('dashboard_1.html', username=user.username, stocks=stocks_with_prices,svg_filename = svg_filename , svg_relative_path = svg_relative_path)
 
 # this will add the Stock then , update the list , 
 # then call dashboard_1 which will get the updated list and get the prices 

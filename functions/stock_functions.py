@@ -52,16 +52,16 @@ def get_stock_price(stock_code,yf_flag,user_id,buy_price):
             buy_price = buy_price  # Example: You bought the stock at $150
 
             # Calculate the moving average (optional)
-            stock_info['20 Day MA'] = stock_info['Close'].rolling(window=20).mean()
+            stock_info['7 Day MA'] = stock_info['Close'].rolling(window=7).mean()
 
             # Create a plot
-            plt.figure(figsize=(14, 7))
+            plt.figure(figsize=(10, 5))
 
             # Plot the closing price
             plt.plot(stock_info.index, stock_info['Close'], label='Closing Price', color='blue')
 
             # Plot the 20-day moving average
-            plt.plot(stock_info.index, stock_info['20 Day MA'], label='20 Day MA', color='orange')
+            plt.plot(stock_info.index, stock_info['7 Day MA'], label='7 Day MA', color='orange')
 
             # Plot the buy price as a horizontal benchmark line
             plt.axhline(y=buy_price, color='green', linestyle='--', label=f'Buy Price (${buy_price})')

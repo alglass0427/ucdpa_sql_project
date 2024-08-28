@@ -142,6 +142,7 @@ def dashboard_1():
             stock_code = portfolio_asset.asset.ticker
             print(stock_code,"THIS IS ITHE STOCK CODE")
             # Fetch the stock price
+            print(portfolio_asset.buy_price)
             stock_price = stock_func.get_stock_price(stock_code, yf_flag,user_id = session['user_id'], buy_price = portfolio_asset.buy_price )
             # stock_price = stock_func.get_stock_price(stock_code, yf_flag )
             
@@ -155,25 +156,27 @@ def dashboard_1():
                 'latest_price': stock_price,
                 'stop_loss': portfolio_asset.stop_loss,
                 'cash_out': portfolio_asset.cash_out,
-                'comment': portfolio_asset.comment
+                'comment': portfolio_asset.comment,
+                'svg' : portfolio_asset.svg_content
             }
 
             # Append this dictionary to the list
             stocks_with_prices.append(stock_data)
-            import os
-            path = os.getcwd()
-            print(path)
-            static_folder  = os.path.join(path, f"app/static/graphs/{user_id}")
-            svg_filename = f"{stock_code}_performance.svg"
-            svg_relative_path = f"graphs/{user_id}/{svg_filename}"
-            print(f" This is the SVG fILE: '{svg_filename}'")
+            # import os
+            # path = os.getcwd()
+            # print(path)
+            # static_folder  = os.path.join(path, f"app/static/graphs/{user_id}")
+            # svg_filename = f"{stock_code}_performance.svg"
+            # svg_relative_path = f"graphs/{user_id}/{svg_filename}"
+            # print(f" This is the SVG fILE: '{svg_filename}'")
             
     
     print(f"This is the Stock data passed to the Dashboard ::::: {stocks_with_prices} ")
-    print (f"This is the SVG File NAME :  {svg_filename}")
-    if svg_filename == "":
-        svg_relative_path = "graphs/dummy_image.jfif"
-    return render_template('dashboard_1.html', username=user.username, stocks=stocks_with_prices,svg_filename = svg_filename , svg_relative_path = svg_relative_path)
+    # print (f"This is the SVG File NAME :  {svg_filename}")
+    # if svg_filename == "":
+    #     svg_relative_path = "graphs/dummy_image.jfif"
+    # return render_template('dashboard_1.html', username=user.username, stocks=stocks_with_prices,svg_filename = svg_filename , svg_relative_path = svg_relative_path)
+    return render_template('dashboard_1.html', username=user.username, stocks=stocks_with_prices)
 
 # this will add the Stock then , update the list , 
 # then call dashboard_1 which will get the updated list and get the prices 

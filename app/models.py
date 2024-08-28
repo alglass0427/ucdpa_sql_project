@@ -131,7 +131,8 @@ class PortfolioAsset(db.Model):
     stop_loss = db.Column(db.Float, nullable=True)
     cash_out = db.Column(db.Float, nullable=True)
     comment = db.Column(db.String(255), nullable=True)
-
+    # New column to store the SVG content
+    svg_content = db.Column(db.Text, nullable=True)
     # Define relationships back to Portfolio and Asset
     portfolio = db.relationship("Portfolio", back_populates="portfolio_assets")
     asset = db.relationship("Asset", back_populates="portfolio_assets")
@@ -156,5 +157,20 @@ class Asset(db.Model):
     ticker = db.Column(db.String(10), unique=True, nullable=False)
     # Update the relationship to use the PortfolioAsset class
     portfolio_assets = db.relationship('PortfolioAsset', back_populates='asset', cascade="all, delete-orphan")
+    history = db.relationship('AssetHistory', backref='asset', lazy=True )   # cascade="all, delete-orphan"
     def __repr__(self):
         return f'<Asset {self.ticker}>'
+    
+class AssetHistory(db.Model):
+    __tablename__ = 'asset_history'
+    id = db.Column(db.Integer, primary_key=True)
+    asset_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    open_price = db.Column(db.Float, nullable=True)
+    high_price = db.Column(db.Float, nullable=True)
+    low_price = db.Column(db.Float, nullable=True)
+    close_price = db.Column(db.Float, nullable=False)
+    volume = db.Column(db.Integer, nullable=True)
+
+    def __repr__(self):
+        return f'<AssetHistory {self.asset.ticker} - {self.date.strftime("%Y-%m-%d")}>'

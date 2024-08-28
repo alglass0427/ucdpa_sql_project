@@ -1,0 +1,29 @@
+<!-- {% if  svg_relative_path  == 'graphs/dummy_image.jfif'%}
+<div class="container container_add mt-4">
+    <div class="row">
+        <div class="col-12">
+            <img src="{{ url_for('static', filename=svg_relative_path ) }}" alt="Stock Performance Graph" height="75%" width="75%">
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container container_add mt-4">
+    <div class="row">
+        <div class="col-12">
+            <img src="{{ url_for('static', filename=svg_relative_path ) }}" alt="Stock Performance Graph" height="75%" width="75%">
+        </div>
+    </div>
+</div>
+{% endif %} -->
+
+<!-- portfolio_assets=portfolio_assets -->
+
+{% for stock_data in stocks %}
+
+    <div class="container container_add mt-4">
+        <h3>{{ stock_data.stock_code }}</h3>
+        <div class="svg-container">
+            {{ stock_data.svg | safe }}  <!-- Render the SVG -->
+        </div>
+    </div>
+{% endfor %}

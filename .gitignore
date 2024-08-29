@@ -4,3 +4,4 @@
 __pycache__
 /templates/svg.html
 /function/*.txt
+.env

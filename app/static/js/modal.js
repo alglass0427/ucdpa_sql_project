@@ -117,14 +117,3 @@ class Modal extends HTMLElement {
 }
 
 customElements.define('uc-modal', Modal);
-
-const modalElement = document.querySelector('uc-modal');
-
-modalElement.addEventListener('cancel', () => {
-  console.log('Modal canceled');
-});
-
-modalElement.addEventListener('confirm', () => {
-  console.log('Modal confirmed');
-});
-

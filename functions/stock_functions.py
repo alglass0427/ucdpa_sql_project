@@ -10,6 +10,7 @@ import io
 import matplotlib
 matplotlib.use('Agg')  # Use the Agg backend
 import matplotlib.pyplot as plt
+import pandas as pd
 
 CURRENT_DIR =  os.getcwd()
 USER_DIRECTORY =  'user_directory.json'
@@ -50,8 +51,16 @@ def get_stock_price(stock_code,yf_flag,user_id,buy_price):
 
             stock = yf.Ticker(stock_code)
 
+            # print(stock)
             # Get historical data for the past month
             stock_info = stock.history(period="1mo")
+            stock_info['SMA'] = stock_info['Close'].rolling(window=20).mean()  ##mean
+            stock_info['STD'] = stock_info['Close'].rolling(window=20).std()   ##standard deviation
+
+            # Calculate the Upper and Lower Bollinger Bands
+            stock_info['Upper Band'] = stock_info['SMA'] + (stock_info['STD'] * 1.96)
+            stock_info['Lower Band'] = stock_info['SMA'] - (stock_info['STD'] * 1.96)
+
             # Fetch historical data using yfinance
 
             asset = Asset.query.filter_by(ticker=stock_code).first()  #######TO MANY DB CALLS
@@ -180,11 +189,19 @@ def get_stock_price(stock_code,yf_flag,user_id,buy_price):
             # Plot the closing price
             plt.plot(dates, closing_prices, label='Closing Price', color='blue')
 
+            # Plot Upper
+            plt.plot(stock_info.index, stock_info['Upper Band'], label='Upper Band', color='green')
+
             # Plot the 7-day moving average
             plt.plot(dates, moving_averages, label='7 Day MA', color='orange')
+            
+            plt.plot(stock_info.index, stock_info['Lower Band'], label='Lower Band', color='red')
 
+            plt.fill_between(stock_info.index, stock_info['Lower Band'], stock_info['Upper Band'], color='gray', alpha=0.3)
+             
             # Plot the buy price as a horizontal benchmark line
             plt.axhline(y=buy_price, color='green', linestyle='--', label=f'Buy Price (${buy_price})')
+            
 
             # Add labels and title
             plt.title(f'{stock_code} Stock Performance - Last 1 Month - As of {today.date()}')

@@ -140,3 +140,8 @@ body {
     height: auto;         /* Maintain the aspect ratio */
     display: block;       /* Remove any extra spacing */
 }
+
+#main{
+    width: 100%;          /* Make the SVG responsive to the container's width */
+    height: auto;         /* Maintain the aspect ratio */
+}

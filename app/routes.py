@@ -260,7 +260,7 @@ def add_stock():
         db.session.add(portfolio_asset)
         try:
             db.session.commit()
-            flash("Stock added to portfolio successfully.", "success")
+            # flash("Stock added to portfolio successfully.", "success")
         except IntegrityError as e:
             db.session.rollback()
             flash(f"An error occurred while adding stock: {e}", "danger")

@@ -75,6 +75,7 @@
             <div class="row border rounded mb-2">
                 <div class="col-12">
                     <h5 class="card-title text-center border-bottom border-2">{{ stock_data.stock_code }}</h5>
+                    
                 </div>
             </div>   
 
@@ -200,7 +201,8 @@
                             <!-- <div class="container container_add mt-4"> -->
                                 <!-- <h3>{{ stock_data.stock_code }}</h3> -->
                                 <div class="svg-container">
-                                    {{ stock_data.svg | safe }}  <!-- Render the SVG -->
+                                    {{ stock_data.svg | safe }}  
+                                    <!-- Render the SVG -->
                                 </div>
                             <!-- </div> -->
                         </uc-modal>

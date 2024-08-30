@@ -53,7 +53,7 @@ def get_stock_price(stock_code,yf_flag,user_id,buy_price):
 
             # print(stock)
             # Get historical data for the past month
-            stock_info = stock.history(period="1mo")
+            stock_info = stock.history(period="6mo")
             stock_info['SMA'] = stock_info['Close'].rolling(window=20).mean()  ##mean
             stock_info['STD'] = stock_info['Close'].rolling(window=20).std()   ##standard deviation
 
@@ -108,7 +108,7 @@ def get_stock_price(stock_code,yf_flag,user_id,buy_price):
             # Query the AssetHistory table for the asset's historical data
             historical_data = db.session.query(AssetHistory).filter(
                 AssetHistory.asset_id == asset.id,   ###AssetHistory id  =  Asset it relationship on PK
-                AssetHistory.date >= today - timedelta(days=30)  # Get data for the last 30 days
+                AssetHistory.date >= today - timedelta(days=180)  # Get data for the last 30 days
             ).order_by(AssetHistory.date).all()
 
             print(historical_data)

@@ -32,8 +32,8 @@ nav ul li a {
 .container_add {
     padding: 2em;
     background-color: #fff;
-    margin: 2em auto;
-    max-width: 1400px;
+    margin: 1em auto;
+    max-width: 1200px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -144,4 +144,56 @@ body {
 #main{
     width: 100%;          /* Make the SVG responsive to the container's width */
     height: auto;         /* Maintain the aspect ratio */
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+/* .show {display:block;} */
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-undefined {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+
+/* Ensure body takes full height */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Flexbox to create a layout with a footer at the bottom */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+}
+
+.content {
+    flex: 1; /* This allows the content area to expand */
+}
+
+/* Footer styles */
+footer {
+    background-color: #343a40; /* Dark background */
+    color: #ffffff; /* White text */
 }

@@ -1,12 +1,18 @@
 //////////////////////////////////
 /////////////////////////////////////////////////
-
+setTimeout(function() {
+    let flashMessages = document.getElementsByClassName('flash-message');
+    for (var i = 0; i < flashMessages.length; i++) {
+        flashMessages[i].style.display = 'none';
+    }
+}, 3000); // 3000 milliseconds = 3 seconds
 
 
 document.addEventListener('DOMContentLoaded', () => {
     const usernameEl = document.querySelector('#fullname');
     const emailEl = document.querySelector('#email');
     const passwordEl = document.querySelector('#password');
+    const confirmpasswordEl = document.querySelector('#confirm_password');
     const dobEl = document.querySelector('#dob');
     const genderEl = document.querySelector('#gender');
     const form_1 = document.querySelector('#signUpForm');
@@ -15,25 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     form_1.addEventListener('submit', function (e) {
         let isValid = true;
 
-        // Run validation functions
-        // if (!checkUsername()) isValid = false;
-        // if (!checkEmail()) isValid = false;
-        // if (!checkPassword()) isValid = false;
-        // if (!checkDOB()) isValid = false;
-        // if (!checkGender()) isValid = false;
-        
-        // if (
 
-        //     !checkUsername()
-        //  || !checkGender()
-        //  || !checkEmail()
-        //  || !checkPassword()
-        //  || !checkDOB()
-        //  ) { 
-        //     isValid =   false
-        // }
-
-        const inputs = [usernameEl, genderEl, emailEl, passwordEl, dobEl];
+        const inputs = [usernameEl, genderEl, emailEl, passwordEl,confirmpasswordEl, dobEl];
 
         // Iterate over each input and run validation based on ID
         inputs.forEach(input => {
@@ -46,6 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case 'password':
                     if (!checkPassword()) isValid = false;
+                    break;
+                case 'confirm_password':
+                    if (!checkPassword()) isValid = false;
+                    // if (!checkPassword()) isValid = false;
                     break;
                 case 'dob':
                     if (!checkDOB()) isValid = false;
@@ -77,6 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'password':
                 checkPassword();
                 break;
+                case 'confirm_password':
+                    checkPassword();
+                    break;
        
         }
     });
@@ -132,14 +128,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const checkPassword = () => {
         const password = passwordEl.value.trim();
+        const conf_password = confirmpasswordEl.value.trim();
         if (!isRequired(password)) {
             showError(passwordEl, 'Password cannot be blank.');
             return false;
         } else if (!isPasswordSecure(password)) {
             showError(passwordEl, 'Password must be at least 8 characters long, with at least one lowercase, one uppercase, one number, and one special character.');
             return false;
+        } else if (password!==conf_password) {
+            showError(passwordEl, 'Passwords do not match.');
+            showError(confirmpasswordEl, 'Passwords do not match.');
+            return false;
         } else {
             showSuccess(passwordEl);
+            showSuccess(confirmpasswordEl);
             return true;
         }
     };

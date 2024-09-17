@@ -20,13 +20,13 @@
 
 <div class="container-sm container_add mt-4 collapse" id="validate-section">
         
-        <form id = "validate"  action="{{ url_for('validator') }}">
+        <form id = "validate" method="POST" action="{{ url_for('validator') }}">
             
             <div class="row g-3 align-items-center">
                 <div class="col-lg-8 col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="username" placeholder="User Name" name="username" >
-                        <label for="username">Email</label>
+                        <input type="text" class="form-control" id="val_email" placeholder="User Name" name="val_email" >
+                        <label for="val_email">Email</label>
                         <small></small>
                     </div>
                 </div>
@@ -38,14 +38,14 @@
         </form>
 </div>
 
-<div class="container-sm container_add mt-4 collapse" id="signup-section">
-    <h1 class="h3 h2-sm h1-md d-flex d-block justify-content-center align-items-center">Register</h1>
+<div class="container-sm container_add pt-3 mt-5" id="signup-section">
+    <h1 class="fs-0 fs-1 fs-sm-2 fs-md-3 fs-lg-4 d-flex d-block justify-content-center align-items-center">Register</h1>
     <form id = "signUpForm" method="POST" autocomplete="off" action="{{ url_for('signup') }}">        
 <!-- Row 1 -->
-        <div class="row g-3 align-items-center">
+        <div class="row g-3 align-items-center mb-3 mt-3">
             <!-- <div class="row g-3 align-items-center"> -->
-            <div class="col-lg-6 col-md-6">
-                <div class="form-floating mb-3">
+            <div class="col-lg-6 col-md-6 mt-3">
+                <div class="form-floating  mb-2">
                     <input type="text" class="form-control" id="fullname" placeholder="Full Name" name="fullname" >
                     <label for="fullname">Full Name</label>
                     <small></small>
@@ -53,7 +53,7 @@
             </div>
         
             <div class="col-lg-6 col-md-6">
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-2 ">
                     <input type="date" class="form-control" id="dob" name="dob">
                     <label for="dob">Date of Birth</label>
                     <small></small>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="col-lg-6 col-md-6 form-floating ">
-                <select class=" form-select mb-3 pt-0 pb-0" aria-label="Gender-select" name = "gender" id="gender">
+                <select class=" form-select mb-2 pt-0 pb-0" aria-label="Gender-select" name = "gender" id="gender">
                     <option selected>Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -73,30 +73,47 @@
 
         <!-- <div class="row g-3 align-items-center"> -->
             <div class="col-lg-6 col-md-6">
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-2">
                     <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
                     <label for="email">Email address</label>
                     <small></small>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-2">
                     <input type="password" class="form-control" id="password" placeholder="Password" name="password">
                     <label for="password">Password</label>
                     <small ></small>
                 </div>
             </div>
+
             <div class="col-lg-6 col-md-6">
-                <div class="form-floating mb-3">
-                    <input type="color" class="form-control" id="fav_color" placeholder="Pick a colour!" name="fav_color">
-                    <label for="fav_color">Favourite  Colour</label>
+                <div class="form-floating mb-2">
+                    <input type="confirm_password" class="form-control" id="confirm_password" placeholder="Confirm Password" name="confirm_password">
+                    <label for="confirm_password">Confirm Password</label>
+                    <small ></small>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="portfolio_desc" placeholder="Portfolio Name" name="portfolio_desc" >
+                    <label for="portfolio_desc">Porfolio Name</label>
+                    <small></small>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6">
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="seed_capital" placeholder="Seed Capital" name="seed_capital" >
+                    <label for="seed_capital">Seed Capital</label>
                     <small></small>
                 </div>
             </div>
         </div>
 <!-- Row 2 -->
-        <div class="row g-3 align-items-center">
-            <div class="col-lg-6 col-md-12">
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col-lg-12 col-md-12">
                 <button class="btn btn-primary w-100" type="submit">Submit</button>
             </div>
         </div>

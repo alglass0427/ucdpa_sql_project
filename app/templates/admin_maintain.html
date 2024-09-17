@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}Dashboard - Portfolio Manager{% endblock %}
+{% block content %}
+<h1 class="h3 h2-sm h1-md d-flex d-block justify-content-center align-items-center">ADMIN - Add Access Levels</h1>
+<div class="container-sm container_add mt-4">
+    <div class="container-sm container_add mt-4" id="signup-section">
+
+        <form method="POST"  action="{{ url_for('admin_maintain_action') }}">
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-5 col-md-12">
+                    <!-- <input type="text" class="form-control" name="stock_code" placeholder="Stock Code" required> -->
+                    <select title="username" id="userName" class="form-control" name="userName" >
+                        <option value="" disabled selected>User Name</option> 
+                        {% for user in users  %}
+                            <option> {{user.username}} </option> 
+                        {% endfor %}
+                    </select>                
+                </div>
+    
+                <div class="col-lg-5 col-md-12">
+                    <select title="role" id="role" class="form-control" name="role" >
+                        <option value="" disabled selected>Access Level</option>  
+                       {% for role in roles  %}
+                           <option> {{role.name}} </option> 
+                       {% endfor %}
+                   </select>             
+                </div>
+    
+        
+    
+                <div class="col-lg-2 col-md-12">
+                    <button type="submit" class="btn btn-primary w-100" id ="submitButton">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+    
+    
+<br>
+<br>
+
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+<!-- <script src="{{ url_for('static', filename='js/scripts.js') }}"></script> -->
+<script src="{{ url_for('static', filename='js/access.js') }}"></script>
+{% endblock scripts %}

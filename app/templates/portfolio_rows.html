@@ -1,0 +1,12 @@
+{% for id, desc, total_investments,total_trades,sum_holdings,sum_cash in portfolios %}
+<tr>
+    <td>{{ loop.index }}</td>  <!-- Loop index to display row number -->
+    <td>{{ id }}</td>
+    <td>{{ desc }}</td>
+    <td>{{ total_investments }}</td> 
+    <td>{{ total_trades }}</td> 
+    <td>{{ sum_holdings }}</td> 
+    <td>{{ sum_cash }}</td> 
+
+</tr>
+{% endfor %}

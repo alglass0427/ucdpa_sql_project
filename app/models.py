@@ -3,27 +3,123 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # from sqlalchemy.orm import relationship
 from app import db
 import pytz
+from flask_login import UserMixin
+from flask_security import RoleMixin
 
-
-
-class UserDetails(db.Model):
+class UserDetails(UserMixin, db.Model):
     __tablename__ = 'user_details'  # Specify the new table name
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(150), unique=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) ### Is Foreign Key to User Role /  Portfolio / PortfolioAssets
+    username = db.Column(db.String(150), unique=False, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(pytz.utc))
     
     # Establish relationship with Portfolio
     portfolios = db.relationship('Portfolio', backref='owner', lazy=True)
+    roles = db.relationship('Role', secondary='user_roles', backref='users')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    # def get_id(self):
+    #     return str(self.id)
 
-# ####relationship between portfolio And assets
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer, primary_key=True)   ### Is Foreign Key to User Role
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+class UserRole(db.Model):
+    __tablename__ = 'user_roles'
+    id = db.Column(db.Integer, primary_key=True)   ###Primary 
+    user_id = db.Column(db.Integer, db.ForeignKey('user_details.id'))  ###Foreign Key to create relationship to User Table
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))  ###Foreign Key to create relationship to Roles Table
+
+
+
+# Update the Portfolio and Asset models to use this mapped class
+class Portfolio(db.Model):
+    __tablename__ = 'portfolio'  # Specify the table name
+    id = db.Column(db.Integer, primary_key=True)
+    portfolio_desc = db.Column(db.String(150), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_details.id'), nullable=False)   ### User ID Foreign 
+    created_at = db.Column(db.DateTime, default=datetime.now(pytz.utc))
+
+    # Update the relationship to use the PortfolioAsset class
+    portfolio_assets = db.relationship('PortfolioAsset', back_populates='portfolio', cascade="all, delete-orphan")
+    
+    def __repr__(self):
+        return f'Portfolio ID: {self.id}  Portfolio Desc: {self.portfolio_desc} '
+    
+
+# Define the new ORM-mapped class for `portfolio_assets`
+class PortfolioAsset(db.Model):
+    __tablename__ = 'portfolio_assets'  # Specify the table name
+    portfolio_asset_seq_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Primary key
+    portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolio.id'), nullable=False)
+    asset_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)   ### Asset ID Foreign  -  Addits managed by Admin roles
+    no_of_trades = db.Column(db.Integer, nullable=False)
+    # Additional fields from the form
+    buy_price = db.Column(db.Float, nullable=False)
+    no_of_shares = db.Column(db.Integer, nullable=False)
+    holding_value = db.Column(db.Float, nullable=True)
+    stop_loss = db.Column(db.Float, nullable=True)
+    cash_out = db.Column(db.Float, nullable=True)
+    comment = db.Column(db.String(255), nullable=True)
+    
+    # New column to store the SVG content
+    svg_content = db.Column(db.Text, nullable=True)
+    # Define relationships back to Portfolio and Asset
+    portfolio = db.relationship("Portfolio", back_populates="portfolio_assets")
+    asset = db.relationship("Asset", back_populates="portfolio_assets")
+   
+
+class Asset(db.Model):
+    __tablename__ = 'assets'  # Specify the table name
+    id = db.Column(db.Integer, primary_key=True)
+    ticker = db.Column(db.String(10), unique=True, nullable=False)
+    company_name = db.Column(db.String(255), nullable=False)
+    industry = db.Column(db.String(255), nullable=True)
+    # Update the relationship to use the PortfolioAsset class
+    
+    def to_json(self):
+        return {
+            'id': self.id,
+            'ticker': self.ticker,
+            'company_name': self.company_name,
+            'industry': self.industry
+        }
+    
+    portfolio_assets = db.relationship('PortfolioAsset', back_populates='asset', cascade="all, delete-orphan")
+    history = db.relationship('AssetHistory', backref='asset', lazy=True )   # cascade="all, delete-orphan"
+    def __repr__(self):
+        return f'<Asset {self.ticker}>'
+    
+class AssetHistory(db.Model):
+    __tablename__ = 'asset_history'
+    id = db.Column(db.Integer, primary_key=True)
+    asset_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    open_price = db.Column(db.Float, nullable=True)
+    high_price = db.Column(db.Float, nullable=True)
+    low_price = db.Column(db.Float, nullable=True)
+    close_price = db.Column(db.Float, nullable=False)
+    volume = db.Column(db.Integer, nullable=True)
+
+    def __repr__(self):
+        return f'<AssetHistory {self.asset.ticker} - {self.date.strftime("%Y-%m-%d")}>'
+    
+
+
+
+
+
+
+    # ####relationship between portfolio And assets
 # portfolio_assets = db.Table('portfolio_assets',
 #     db.Column('portfolio_asset_seq_id', db.Integer, primary_key=True, autoincrement=True),
 #     db.Column('portfolio_id', db.Integer, db.ForeignKey('portfolio.id'), primary_key=True),
@@ -113,64 +209,3 @@ class UserDetails(db.Model):
 # # If you create a class named User, SQLAlchemy will automatically use user as the default table name.
 # # If the class name is UserDetails, the default table name would be userdetails.
 # # Example Without __tablename__:
-
-
-
-
-###-----------------------------
-# Define the new ORM-mapped class for `portfolio_assets`
-class PortfolioAsset(db.Model):
-    __tablename__ = 'portfolio_assets'  # Specify the table name
-    portfolio_asset_seq_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Primary key
-    portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolio.id'), nullable=False)
-    asset_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)
-    
-    # Additional fields from the form
-    buy_price = db.Column(db.Float, nullable=False)
-    no_of_shares = db.Column(db.Integer, nullable=False)
-    stop_loss = db.Column(db.Float, nullable=True)
-    cash_out = db.Column(db.Float, nullable=True)
-    comment = db.Column(db.String(255), nullable=True)
-    # New column to store the SVG content
-    svg_content = db.Column(db.Text, nullable=True)
-    # Define relationships back to Portfolio and Asset
-    portfolio = db.relationship("Portfolio", back_populates="portfolio_assets")
-    asset = db.relationship("Asset", back_populates="portfolio_assets")
-
-
-# Update the Portfolio and Asset models to use this mapped class
-class Portfolio(db.Model):
-    __tablename__ = 'portfolio'  # Specify the table name
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_details.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now(pytz.utc))
-
-    # Update the relationship to use the PortfolioAsset class
-    portfolio_assets = db.relationship('PortfolioAsset', back_populates='portfolio', cascade="all, delete-orphan")
-    def __repr__(self):
-        return f'<Portfolio {self.id}>'
-
-
-class Asset(db.Model):
-    __tablename__ = 'assets'  # Specify the table name
-    id = db.Column(db.Integer, primary_key=True)
-    ticker = db.Column(db.String(10), unique=True, nullable=False)
-    # Update the relationship to use the PortfolioAsset class
-    portfolio_assets = db.relationship('PortfolioAsset', back_populates='asset', cascade="all, delete-orphan")
-    history = db.relationship('AssetHistory', backref='asset', lazy=True )   # cascade="all, delete-orphan"
-    def __repr__(self):
-        return f'<Asset {self.ticker}>'
-    
-class AssetHistory(db.Model):
-    __tablename__ = 'asset_history'
-    id = db.Column(db.Integer, primary_key=True)
-    asset_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    open_price = db.Column(db.Float, nullable=True)
-    high_price = db.Column(db.Float, nullable=True)
-    low_price = db.Column(db.Float, nullable=True)
-    close_price = db.Column(db.Float, nullable=False)
-    volume = db.Column(db.Integer, nullable=True)
-
-    def __repr__(self):
-        return f'<AssetHistory {self.asset.ticker} - {self.date.strftime("%Y-%m-%d")}>'

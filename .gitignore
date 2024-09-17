@@ -5,3 +5,8 @@ __pycache__
 /templates/svg.html
 /function/*.txt
 .env
+/test_foldergir
+conn.py
+pip_requirements.txt
+insert_roles.py
+insert.py

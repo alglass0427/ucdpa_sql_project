@@ -1,0 +1,85 @@
+import os
+import json
+import yfinance as yf
+import matplotlib.pyplot as plt
+import tempfile
+from datetime import datetime, timedelta
+import io
+import matplotlib
+matplotlib.use('Agg')  # Use the Agg backend
+import matplotlib.pyplot as plt
+import pandas as pd
+from yahooquery import Ticker
+from concurrent.futures import ThreadPoolExecutor
+
+
+def get_stats(ticker):
+    info = yf.Tickers(ticker).history(period="1d", actions=False,rounding=True)
+    idx = pd.IndexSlice
+    info.loc[:,idx]
+
+
+ticker_list = ['AAPL', 'AMZN', 'GOOG']
+
+def get_latest_price (ticker_list):
+    tickers = ' '.join(ticker_list)
+    stock = yf.Ticker('AAPL AMZN GOOG')
+    df = stock.history(period="5d", actions=False,rounding=True)
+    # print()
+    print(df)
+    # print(stock_info)
+    # last_quote = stock_info['Close'].iloc[-1]
+    # last_quote = df['Close']
+    # print(df)
+    # for px in df:
+    #     print (px)
+    # return last_quote
+
+# get_latest_price(ticker_list)
+
+# with ThreadPoolExecutor() as executor:
+#     executor.map(get_latest_price, ticker_list)
+
+def get_and_save_asset_history(tickers, start_date, end_date):
+    # Fetch data for multiple tickers over the specified date range
+    stock_data = yf.download(tickers, start=start_date, end=end_date)
+    
+    # stock_data will contain multi-level columns with Close, Volume, etc.
+    # Example: stock_data['Close']['AAPL']
+    
+    # Iterate over the tickers and date ranges
+    for ticker in tickers.split():
+        ticker_close = stock_data['Close'][ticker]
+        ticker_volume = stock_data['Volume'][ticker]
+        
+        # Iterate through each date and save the data
+        for date, close_price in ticker_close.items():
+            volume = ticker_volume[date]
+            
+            print(f" Ticker : {ticker} \n PX : {ticker_close}" )
+            # Create a new AssetHistory object for each row of data
+            # history_entry = AssetHistory(
+            #     ticker=ticker,
+            #     date=date,
+            #     close_price=close_price,
+            #     volume=volume
+            # )
+            
+            # # Add the entry to the session
+            # db.session.add(history_entry)
+    
+    # try:
+    #     # Commit the session to save the data
+    #     db.session.commit()
+    #     print("Data saved successfully.")
+    # except Exception as e:
+    #     db.session.rollback()
+    #     print(f"Error saving data: {e}")
+
+# Example usage
+tickers = "AAPL MSFT TSLA"
+start_date = "2023-12-31"
+end_date = "2023-12-31"
+
+get_and_save_asset_history(tickers, start_date, end_date)
+

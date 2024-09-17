@@ -19,11 +19,16 @@
                 </div>
 
             </div>
+
+
+
             <div class="col-md-2 col-xs-12 d-flex d-md-block justify-content-center align-items-center">    
                 <a href="{{ url_for('dashboard_1', yf_flag='on') }}" class="btn btn-primary btn-sm">
                 Refresh Prices!
                 </a>
             </div>
+
+            
         </div>
 
 </div>
@@ -33,7 +38,7 @@
             <div class="row g-3 align-items-center mb-3">
                 <div class="col-lg-6 col-md-6">
                     <!-- <input type="text" class="form-control" name="stock_code" placeholder="Stock Code" required> -->
-                    <select title="stock" id="stockDropdown" class="form-control" name="stock_code">
+                    <select title="stock" id="stockDropdown" class="form-control select2" name="stock_code" data-live-search="true">
                         <option></option> <!-- Default option -->
                     </select>                
                 </div>
@@ -65,9 +70,8 @@
                 </div>
             </div>
         </form>
-        
-
     </div>
+
 <!-- CARD FOR SMALL SCREENS  -->
 {% for stock_data in stocks %}
     <div class="card mb-2 d-md-none">
@@ -229,4 +233,6 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 {% endblock scripts %}

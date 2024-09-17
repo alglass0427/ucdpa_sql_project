@@ -1,0 +1,130 @@
+<!-- CARD FOR SMALL SCREENS  -->
+{% for portflio,assets,asset in stocks %}
+{% if assets and asset.ticker != "CASH" %}
+
+
+<uc-modal id = "{{ asset.ticker }}_modal" class="flex">
+    <div class="svg-container">
+        {{ assets.svg_content | safe }}  
+    </div>
+</uc-modal>
+
+    <div class="card mb-2 d-md-none">
+        <div class="card-body">
+            <div class="row border rounded mb-2">
+                <div class="col-12">
+                    <h5 class="card-title text-center border-bottom border-2 modal_link">{{ asset.ticker }}</h5>
+                    
+                </div>
+            </div>   
+
+
+            <div class="row border rounded">
+
+                
+                <div class="col-12 border-bottom">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="card-text pl-2"><strong>Buy Price:</strong></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="card-text"> {{ assets.buy_price }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 border-bottom">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="card-text pl-2"><strong>Volume:</strong></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="card-text"> {{ assets.no_of_shares }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 border-bottom">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="card-text pl-2"><strong>Latest Px:</strong></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="card-text">  {{ assets.latest_price }} </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 border-bottom">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="card-text pl-2"><strong>% Diff:</strong></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="card-text">
+                                {% set current_value = assets.latest_price * assets.no_of_shares %}
+                                {% set holding_value = assets.holding_value %}
+                                {% if current_value and holding_value %}
+                                    {% set percentage_diff = ((current_value - holding_value) / holding_value) * 100 %}
+                                    {% if percentage_diff > 0 %}
+                                        <span style="color: green;">{{ percentage_diff|round(2) }}%</span>
+                                    {% else %}
+                                        <span style="color: red;">{{ percentage_diff|round(2) }}%</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span>N/A</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+
+
+
+                <div class="col-12 border-bottom">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="card-text pl-2"><strong>Stop Loss Px:</strong></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="card-text">  {{ assets.stop_loss }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 border-bottom">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="card-text pl-2"><strong>Profit Px:</strong></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="card-text">  {{ assets.cash_out  }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 border-bottom">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="card-text pl-2"><strong>Comment:</strong></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="card-text">  {{ assets.comment }}</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class = "text-center mb-2">
+                    <button type="button" data-url="{{ url_for('remove_stock', stock_code=asset.ticker,portfolio_id = assets.portfolio_id)}}" class="text-danger remove-stock-btn">Remove</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endfor %}
+
+
+
+

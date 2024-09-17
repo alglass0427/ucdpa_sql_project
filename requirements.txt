@@ -80,7 +80,6 @@ pure_eval==0.2.3
 Pygments==2.18.0
 pyparsing==3.1.2
 pytz==2024.1
-pywin32==306
 pyzmq==26.2.0
 referencing==0.35.1
 requests==2.32.3

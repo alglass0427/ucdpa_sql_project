@@ -9,9 +9,9 @@ def create_app():
     app = Flask(__name__)
     # basedir = os.path.abspath(os.path.dirname(__file__))   # C:Users/.../..../....
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir,'data.sqlite')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Holly#040115@localhost/portfolio_db'
-    app.config['ADMIN_MAINTAIN_PASSWORD'] = 'password'
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://alwglass:G4MaiivKjlB6fpgdbD9WlHLlgeDBPCr9@dpg-cr735l3tq21c73f800cg-a.oregon-postgres.render.com/portfolio_db_5uxo'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Holly#040115@localhost/portfolio_db'
+    # app.config['ADMIN_MAINTAIN_PASSWORD'] = 'password'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://alwglass:G4MaiivKjlB6fpgdbD9WlHLlgeDBPCr9@dpg-cr735l3tq21c73f800cg-a.oregon-postgres.render.com/portfolio_db_5uxo'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.secret_key = 'mysecretkey'
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)

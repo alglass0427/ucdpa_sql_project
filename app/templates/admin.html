@@ -49,20 +49,20 @@
             <table class="table table-striped table-bordered" id="portfolioContent">
                 <thead class="table-primary">
                     <tr>
-                        <th>#</th>
+                        <th class="d-none d-md-table-cell">#</th>
                         <th>Ticker</th>
                         <th>Company Name</th>
-                        <th>Industry</th>
+                        <th class="d-none d-md-table-cell">Industry</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for asset in assets %}
                     
                     <tr>
-                        <td > {{ asset.id }} </td>
+                        <td class="d-none d-md-table-cell"> {{ asset.id }} </td>
                         <td > {{ asset.ticker }}</td>
                         <td > {{ asset.company_name }}</td>
-                        <td > {{ asset.industry }}</td>
+                        <td class="d-none d-md-table-cell"> {{ asset.industry }}</td>
                     </tr>
                                   
                     {% endfor %}

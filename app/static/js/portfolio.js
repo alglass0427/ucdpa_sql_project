@@ -10,7 +10,7 @@ $(document).ready(function() {
             contentType: 'application/json',  // Specify content type as JSON
             data: JSON.stringify({ 'portfolio': portfolio }),
             success: function(response) {
-                $('#portfolioContent tbody').html(response);
+                $('#portfolioDisplay').html(response);
             }
         });
     });

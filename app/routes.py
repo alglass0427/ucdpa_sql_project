@@ -284,23 +284,25 @@ def get_all_portfolios():
     # portfolios = Portfolio.query.all()
     # print(f"Portfolios: {portfolios}")
 
-    aggregated_assets_cte = db.session.query(
-        Portfolio.id.label('portfolio_id'),
-        Asset.company_name,
-        func.sum(PortfolioAsset.holding_value).label('total_holding_value'),
-        func.sum(PortfolioAsset.no_of_trades).label('total_no_of_trades')  # Aggregate no_of_trades
-    ).outerjoin(Portfolio.portfolio_assets)\
-        .outerjoin(PortfolioAsset.asset) \
-        .filter(Portfolio.user_id == current_user.id , Asset.company_name != "CASH") \
-    .group_by(Portfolio.id,Asset.company_name).cte('aggregated_assets')
-    test  = db.session.query(aggregated_assets_cte).all()
-    print(test)
+    # aggregated_assets_cte = db.session.query(
+    #     Portfolio.id.label('portfolio_id'),
+    #     Asset.company_name,
+    #     func.sum(PortfolioAsset.holding_value).label('total_holding_value'),
+    #     func.sum(PortfolioAsset.no_of_trades).label('total_no_of_trades')  # Aggregate no_of_trades
+    # ).outerjoin(Portfolio.portfolio_assets)\
+    #     .outerjoin(PortfolioAsset.asset) \
+    #     .filter(Portfolio.user_id == current_user.id , Asset.company_name != "CASH") \
+    # .group_by(Portfolio.id,Asset.company_name).cte('aggregated_assets')
+    # test  = db.session.query(aggregated_assets_cte).all()
+    # print(test)
 
     if portfolio != 'All':
         all_details_cte = db.session.query(
         Portfolio.id.label('portfolio_id'),
         Portfolio.portfolio_desc,
         Asset.ticker,
+        Asset.company_name,
+        Asset.industry,
         PortfolioAsset.no_of_trades,
         PortfolioAsset.holding_value,
         UserDetails.username,  # Assuming you have a User model related to Portfolio
@@ -310,8 +312,8 @@ def get_all_portfolios():
                 .outerjoin(UserDetails, UserDetails.id == current_user.id) \
                     .filter(Portfolio.portfolio_desc == portfolio).cte('all_details')
         print ("SINGLE QUERY")
-        test  = db.session.query(aggregated_assets_cte).all()
-        print(test)
+        # test  = db.session.query(aggregated_assets_cte).all()
+        # print(test)
 
     else:
     # Step 1: Define CTE for all portfolio details (portfolio, assets, user details, etc.)
@@ -319,6 +321,8 @@ def get_all_portfolios():
             Portfolio.id.label('portfolio_id'),
             Portfolio.portfolio_desc,
             Asset.ticker,
+            Asset.company_name,
+            Asset.industry,
             PortfolioAsset.no_of_trades,
             PortfolioAsset.holding_value,
             UserDetails.username,  # Assuming you have a User model related to Portfolio
@@ -328,8 +332,8 @@ def get_all_portfolios():
                 .outerjoin(UserDetails, UserDetails.id == current_user.id )\
                     .filter(Portfolio.user_id  == current_user.id).cte('all_details')
         print ("ALL QUERY")
-        test  = db.session.query(aggregated_assets_cte).all()
-        print(test)            
+        # test  = db.session.query(aggregated_assets_cte).all()
+        # print(test)            
 
     # Step 2: Define CTE for maximum trades
     max_trades_cte = db.session.query(
@@ -374,7 +378,7 @@ def get_all_portfolios():
     # Step 4: Combine all the CTEs and fetch distinct portfolios with related data
     final_query = db.session.query(
         all_details_cte.c.portfolio_id,
-        all_details_cte.c.portfolio_desc,        
+        all_details_cte.c.portfolio_desc,     
         func.coalesce(total_investments_cte.c.total_investments, 0).label('total_investments'),
         func.coalesce(max_trades_cte.c.max_trades, 0).label('max_trades'),
         func.coalesce(sum_investments_cte.c.sum_investments, 0).label('sum_investments'),
@@ -394,10 +398,12 @@ def get_all_portfolios():
         print(f"Portfolio ID: {portfolio.portfolio_id}, Description: {portfolio.portfolio_desc}")
         print(f"Total Investments: {portfolio.total_investments}, Max Trades: {portfolio.max_trades}")
 
+    # Fetch portfolio assets for drill-down details
+
 
     if portfolios:
         # Render the table rows for all portfolios
-        return render_template('portfolio_rows.html', portfolios=portfolios)
+        return render_template('portfolio_rows.html', portfolios=portfolios ,  all_details = db.session.query(all_details_cte).all() )
     else:
         return jsonify({"error": "No portfolios found"}), 404
 

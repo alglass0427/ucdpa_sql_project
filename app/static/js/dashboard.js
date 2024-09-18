@@ -228,7 +228,7 @@ document.getElementById('addStockButton').addEventListener('click', function() {
 
 document.getElementById('sellStockButton').addEventListener('click', function() {
     yahooFinanceSwitch = document.getElementById("yahooFinance");
-    // yahooFinanceSwitch.checked = false
+    yahooFinanceSwitch.checked = false
     console.log('INSIDE SELL STOCK THE API')
     fieldCheck  =  allFieldsValid()
     if (fieldCheck === true){
@@ -425,7 +425,7 @@ function removeButton () {
     removeButtons.forEach(function(button) {
         button.addEventListener('click', function() {
             yahooFinanceSwitch = document.getElementById("yahooFinance");
-            // yahooFinanceSwitch.checked = false
+            yahooFinanceSwitch.checked = false
             // Get the URL from the data-url attribute
             const url = button.getAttribute('data-url');
             console.log(url)

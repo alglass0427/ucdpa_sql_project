@@ -1,28 +1,61 @@
 {% extends "base.html" %}
 {% block title %}Portfolio Manager{% endblock %}
 {% block content %}
-<div class="jumbotron mt-5">
+<div class="container mt-5">
     {% if current_user.is_authenticated %} 
-    <h2 class="fs-0 fs-1 fs-sm-2 fs-md-3 fs-lg-4 d-flex d-block justify-content-center align-items-center">Welcome to your Equity Portfolio, {{ session.username}}</h2>
-    <p class="lead">Start Investing!</p>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <h2 class="responsive-text  d-flex d-block justify-content-center text-center">Welcome - {{ current_user.username}}</h2>
+
+            <div class="col-12 col-md-6 d-flex justify-content-center">
+              <img id="fade-image" src="{{ url_for('static', filename='icon.png') }}" class="img-fluid fade-out" alt="Icon">
+            </div>
+          </div>
+                 
+      </div>
+      
+    <!-- <p class="lead">Start Investing!</p> -->
     <hr class="my-4">  
     <div class="row g-3 align-items-center">
 
         <div class="col-lg-6 col-md-6">
-            <a class="btn btn-primary w-100" href="{{ url_for('dashboard_2') }}" role="button">Lets Get Started</a>
+            <a class="btn btn-primary w-100" href="{{ url_for('dashboard_2') }}" role="button">Dashboard</a>
         </div>
+
         <div class="col-lg-6 col-md-6">
             <a class="btn btn-primary w-100" href="{{ url_for('logout') }}" role="button">Change User</a>
         </div>
     </div>
             {% else %}
-    <h2 class="display-6">Start an Equity Portfolio!!</h2>
-    <p>Get started by creating an account and logging in.</p>
+    <!-- <h2 class="display-6">Start an Equity Portfolio!!</h2> -->
+    <!-- <p>Get started by creating an account and logging in.</p> -->
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+
+            <div class="col-12 col-md-12 d-flex justify-content-center">
+                <h2 class="responsive-text  d-flex d-block justify-content-center text-center"> Welcome to Portfolio Manager </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+  
+    <div class="row justify-content-center align-items-center">
+        <div class="col-12 col-md-6 d-flex justify-content-center">
+          <img id="fade-image" src="{{ url_for('static', filename='icon.png') }}" class="img-fluid fade-out" alt="Icon">
+        </div>
+      </div>
+      
+      
+    </div>
     <hr class="my-4"> 
     <div class="row g-3 align-items-center">
         <div class="col-lg-6 col-md-6">
             <a class="btn btn-primary w-100" href="{{ url_for('login') }}" role="button">Login</a>
         </div>
+        <br>
+
         <div class="col-lg-6 col-md-6">
             <a class="btn btn-primary w-100" href="{{ url_for('signup') }}" role="button">Sign Up</a>
         </div>
@@ -32,4 +65,17 @@
 {% endblock %}
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    <script>
+  window.addEventListener('load', function() {
+    // Get the image element
+    const imgElement = document.getElementById('fade-image');
+    
+    // Remove the 'fade-out' class and add the 'fade-in' class on page load
+    imgElement.classList.remove('fade-out');
+    imgElement.classList.add('fade-in');
+  });
+</script>
 {% endblock scripts %}
+
+  

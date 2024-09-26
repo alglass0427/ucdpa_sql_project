@@ -41,7 +41,7 @@
             <td>{{ assets.holding_value }}</td>
             <td> {{ assets.latest_price }} </td>
             <td>
-                {% set current_value = (assets.latest_price | float) * (assets.no_of_shares | float) %}
+                {% set current_value = ((assets.latest_price | float) * (assets.no_of_shares | float)   | round(4)) %}
                 {% set holding_value = (assets.holding_value | float) %}
                 {% if current_value and holding_value %}
                     {% set percentage_diff = ((current_value - holding_value) / holding_value) * 100 %}
@@ -79,6 +79,7 @@
         {{ assets.svg_content | safe }}  
     </div>
 </uc-modal>
+
 
     <div class="card mb-2 d-md-none">
         <div class="card-body">

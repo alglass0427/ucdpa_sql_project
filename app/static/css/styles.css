@@ -197,3 +197,81 @@ footer {
     background-color: #343a40; /* Dark background */
     color: #ffffff; /* White text */
 }
+
+/* Initial hidden state (fade-out) */
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  /* Visible state (fade-in) */
+  .fade-in {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .responsive-text {
+    font-size: 24px;  /* Default size for small screens */
+}
+
+
+.carousel-controls {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .carousel-control-prev,
+  .carousel-control-next {
+    margin: 0 10px;
+  }
+  
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .carousel-indicators li {
+    background-color: #333;
+  }
+  
+  .carousel-indicators .active {
+    background-color: #007bff;
+  }
+  
+
+
+
+@media (min-width: 576px) {
+    .responsive-text {
+        font-size: 30px;
+    }
+}
+
+@media (min-width: 768px) {
+    .responsive-text {
+        font-size: 36px;
+    }
+}
+
+@media (min-width: 992px) {
+    .responsive-text {
+        font-size: 42px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .responsive-text {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 400px) {
+    #portfolioContent  thead {
+      font-size: 0.9em;
+    }
+    #portfolioContent  tbody {
+        font-size: 0.9em;
+      }
+  }
+  

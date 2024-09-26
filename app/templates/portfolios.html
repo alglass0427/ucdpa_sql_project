@@ -16,7 +16,7 @@
 
             </div>
             <div class="col-lg-7 col-md-12">
-                <!-- <input type="text" class="form-control" name="stock_code" placeholder="Stock Code" required> -->
+
                 <select title="portfolio" id="portfolioList" class="form-control" name="portfolio_id">
                         <option>All</option>
                     {% for portfolio in portfolios  %}
@@ -40,12 +40,6 @@
     <div class="container container_add mt-2">
         <form action="{{ url_for('add_portfolio') }}" method="POST" id = "addPortfolio">
             <div class="row g-3 align-items-center">
-                <!-- <div class="col-lg-6 col-md-6">
-                   
-                    <select title="portfolio" id="portfolioList" class="form-control" name="portfolio_id">
-                        <option></option> 
-                    </select>                
-                </div> -->
                 
                 <div class="col-lg-6 col-md-12">
                     <input type="text" class="form-control" name="portfolio_desc" placeholder="Portfolio Name" required>

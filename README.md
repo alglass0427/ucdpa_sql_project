@@ -2,7 +2,7 @@
 
 On Render
 Link to deployment
-https://ucdpa-python-project.onrender.com/
+https://ucdpa-sql-project.onrender.com/
 
 Portfolio Dashboard Flask Application
 Overview
@@ -21,7 +21,7 @@ pip
 
 Installation
 1. Clone the Repository
-    git clone https://github.com/yourusername/portfolio-dashboard.git
+    git clone https://github.com/alglass0427/ucdpa_sql_project.git
     cd portfolio-dashboard
 2. Create and Activate a Virtual Environment
     Create a virtual environment to manage dependencies:
@@ -43,7 +43,7 @@ Installation
 
 makefile
 
-FLASK_APP=app.py
+FLASK_APP=run.py
 FLASK_ENV=development
 SECRET_KEY=your_secret_key_here
 
@@ -96,3 +96,4 @@ Take the Stop Loss and Profit Price and evaluate these compared to the market pr
 Enhance functionality of The refresh prices to fetch all stocks at once
 Move user details to SQL DB in PostgrSQL
 
+![alt text](image.png)

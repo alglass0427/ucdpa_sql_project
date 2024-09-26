@@ -134,36 +134,10 @@ $(document).ready(function() {
             }
         });
 
-         // Second request to update the card section
-    //     $.ajax({
-    //         url: url + '/cards',  // Assume you have a different URL for the cards section
-    //         type: 'POST',
-    //         contentType: 'application/json', 
-    //         data: JSON.stringify({ 'portfolio': portfolio }),
-    //         success: function(response) {
-    //         $('#cardSection').html(response);  // Update card section with the cardData
-    //         applyEventListeners()
-    //         }
-    //         ,
-    //         error: function(xhr, status, error) {
-    //         console.error("Error updating cards: " + error);
-    //     }
-    // })
     
     });
     
 });
-
-/////SEARCH ON DROPDOWN
-// $(document).ready(function() {
-//     $('#stockDropdown').select2({
-//         placeholder: "Select an Equity",
-//         // allowClear: true,
-//         theme: 'bootstrap-5'
-//     });
-// });
-
-
 
 
 

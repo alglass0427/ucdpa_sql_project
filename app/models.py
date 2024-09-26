@@ -15,7 +15,7 @@ class UserDetails(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now(pytz.utc))
     
     # Establish relationship with Portfolio
-    portfolios = db.relationship('Portfolio', backref='owner', lazy=True)
+    portfolios = db.relationship('Portfolio', backref='owner', cascade="all, delete-orphan", lazy=True)
     roles = db.relationship('Role', secondary='user_roles', backref='users')
 
     def set_password(self, password):
@@ -63,7 +63,7 @@ class PortfolioAsset(db.Model):
     portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolio.id'), nullable=False)
     asset_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)   ### Asset ID Foreign  -  Addits managed by Admin roles
     no_of_trades = db.Column(db.Integer, nullable=False)
-    # Additional fields from the form
+    # Additional fields from the form input
     buy_price = db.Column(db.Float, nullable=False)
     no_of_shares = db.Column(db.Integer, nullable=False)
     holding_value = db.Column(db.Float, nullable=True)

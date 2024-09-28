@@ -451,7 +451,7 @@ def get_portfolio_assets():
                         outerjoin(PortfolioAsset.asset).\
                         filter(Portfolio.portfolio_desc == portfolio).all()
     print(f"Assets : {assets}")
-    print(f"Portfolio ID from Assets : {assets[0][0]}")
+    # print(f"Portfolio ID from Assets : {assets[0][0]}")
     print(f"Yahoo Flag : {yf_flag}")
     if yf_flag == 'on':
         for portfolio, portfolio_asset, asset in assets:

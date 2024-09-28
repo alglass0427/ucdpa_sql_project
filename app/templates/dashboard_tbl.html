@@ -15,7 +15,7 @@
 <div class = "table-responsive d-none d-md-block">
 <table class="table table-striped table-bordered table-hover" id ="portfolioContent">
     <thead class="table-primary">
-        <tr>
+        <tr class = "text-center">
             <th class="d-none d-lg-table-cell">#</th>
             <th>Stock Symbol</th>
             <th># Trades</th>
@@ -38,8 +38,8 @@
             <td >{{ assets.no_of_trades }}</td>
             <td class="d-none d-lg-table-cell">{{ assets.buy_price }}</td>
             <td>{{ assets.no_of_shares }}</td>
-            <td>{{ assets.holding_value }}</td>
-            <td> {{ assets.latest_price }} </td>
+            <td>{{ assets.holding_value | round(4) }}</td>
+            <td> {{ assets.latest_price | round(4) }} </td>
             <td>
                 {% set current_value = ((assets.latest_price | float) * (assets.no_of_shares | float)   | round(4)) %}
                 {% set holding_value = (assets.holding_value | float) %}

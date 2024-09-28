@@ -1,0 +1,86 @@
+───app
+│   │   .env
+│   │   config.py
+│   │   data.sqlite
+│   │   models.py
+│   │   routes.py
+│   │   __init__.py
+│   │
+│   ├───static
+│   │   │   buy_sell_refresh.png
+│   │   │   dashboard.png
+│   │   │   favicon.png
+│   │   │   icon.png
+│   │   │   insert_py_files.png
+│   │   │   PGAdmin.png
+│   │   │   portfolios.png
+│   │   │   secrets.png
+│   │   │   SQLLite_DB_Browser.png
+│   │   │   svg_example.png
+│   │   │   tickers.csv
+│   │   │
+│   │   ├───css
+│   │   │       styles.css
+│   │   │
+│   │   ├───js
+│   │   │       access.js
+│   │   │       admin.js
+│   │   │       dashboard.js
+│   │   │       modal.js
+│   │   │       portfolio.js
+│   │   │       scripts.js
+│   │   │       signup.js
+│   │   │
+│   │   └───json
+│   │           tickers
+│   │
+│   ├───templates
+│   │       404.html
+│   │       500.html
+│   │       admin.html
+│   │       admin_maintain.html
+│   │       base.html
+│   │       dashboard_2.html
+│   │       dashboard_cards.html
+│   │       dashboard_tbl.html
+│   │       index.html
+│   │       login.html
+│   │       portfolios.html
+│   │       portfolio_assets.html
+│   │       portfolio_rows.html
+│   │       signup.html
+│   │       svg.html
+│   │       validator.html
+│   │
+│   └───__pycache__
+│           config.cpython-311.pyc
+│           config.cpython-38.pyc
+│           models.cpython-311.pyc
+│           models.cpython-38.pyc
+│           routes.cpython-311.pyc
+│           routes.cpython-38.pyc
+│           __init__.cpython-311.pyc
+│           __init__.cpython-38.pyc
+│
+├───functions
+│   │   date_functions.py
+│   │   functions.py
+│   │   mail_functions.py
+│   │   stock_functions.py
+│   │   __init__.py
+│   │
+│   └───__pycache__
+│           functions.cpython-38.pyc
+│           mail_functions.cpython-311.pyc
+│           mail_functions.cpython-38.pyc
+│           stock_functions.cpython-311.pyc
+│           stock_functions.cpython-38.pyc
+│           __init__.cpython-311.pyc
+│           __init__.cpython-38.pyc
+│
+├───test_folder
+│   │   test.json
+│   │   yahoo_test_threads
+│   │
+│   └───app_test
+│           app_old.py

@@ -22,33 +22,36 @@ pip
 
 Installation
 ## Clone the Repository
-    git clone https://github.com/alglass0427/ucdpa_sql_project.git
+    git clone https://github.com/alglass0427/ucdpa_sql_project.git`
+
     cd portfolio-dashboard
 ## Create and Activate a Virtual Environment
-    Create a virtual environment to manage dependencies:
+
+Create a virtual environment to manage dependencies:
+
     python -m venv venv
 
-        Activate the virtual environment:
-            Windows:
-            venv\Scripts\activate
+Activate the virtual environment:
+Windows:
+    venv\Scripts\activate
 
-            macOS/Linux:
-            source venv/bin/activate
+macOS/Linux:
+    source venv/bin/activate
 
 ## Install Dependencies
-    Install all required Python packages using requirements.txt:
+Install all required Python packages using requirements.txt:
     pip install -r requirements.txt
 
 ## Set Up Environment Variables
-    Create a .env file in the root directory of the project and add the following environment variables:
+Create a .env file in the root directory of the project and add the following environment variables:
 
 makefile
 
-FLASK_APP=run.py
-FLASK_ENV=development
-SECRET_KEY=2b7697b98a3fe9dfbe3365ecb10e000a
-FLASK_DEBUG=0
-SQLALCHEMY_DATABASE_URI=postgresql://alwglass:l7Q54KORzemCBYlGiJ0gh4ddGFnTT2eb@dpg-crphhlqj1k6c73c68hag-a.oregon-postgres.render.com/portfolio_db_xvin
+    FLASK_APP=run.py
+    FLASK_ENV=development
+    SECRET_KEY=2b7697b98a3fe9dfbe3365ecb10e000a
+    FLASK_DEBUG=0
+    SQLALCHEMY_DATABASE_URI=postgresql://alwglass:l7Q54KORzemCBYlGiJ0gh4ddGFnTT2eb@dpg-crphhlqj1k6c73c68hag-a.oregon-postgres.render.com/portfolio_db_xvin
 
 ![alt text](./app/static/secrets.png)
 
@@ -70,13 +73,13 @@ This will check if The database has the required static data For the dropdown in
 
 
 ### Sample Queries
-select * from portfolio_assets;
-select * from asset_history order by asset_id, date desc;
-select * from user_details;
-select * from portfolio;
-select * from assets;
-select * from role;
-select * from user_roles;
+    select * from portfolio_assets;
+    select * from asset_history order by asset_id, date desc;
+    select * from user_details;
+    select * from portfolio;
+    select * from assets;
+    select * from role;
+    select * from user_roles;
 
 
 
@@ -85,43 +88,59 @@ Start the Flask development server:
 
 bash
 
-flask run
+    flask run
 Open your browser and go to http://127.0.0.1:5000 to access the application.
 
 Application Structure
-app.py: The main Flask application file containing route definitions.
+
+ 
+
+app/__init.py: The main Flask application file containing route definitions.
+models.py: - Database Table structure
+run.py: runs the programme
+routes.py - stores The routes And Functions
 templates/: HTML templates for rendering web pages.
 static/: Static files such as CSS, JavaScript, and images.
+functions/: functions to import
 requirements.txt: A list of all dependencies needed to run the application.
 .env: Environment variables for configuration (should be created manually). Included in Zip file
 Key Routes
 /: Home page or landing page.
 /login: User login page.
-/dashboard_1: User's portfolio dashboard.
+/dashboard_2: User's portfolio dashboard.
+/portfolio: User's portfolio info.
+/add_portfolio :  add user portfolio
 /add_stock: Add a new stock to the portfolio (POST only).
 /remove_stock/<string:stock_code>: Remove a stock from the portfolio.
 Debugging
 
-Points to Note
-The application defaults to using 'off' for yf_flag if not provided. 
-This toggle is controlled tith the Y! switch on the Dashboard(e.g., when adding stocks).
-If this is set To ON the Application Will refresh all prices in the Portfolio when a new Stock is added
-Alternatively you can leave it  off  , Add All stocks  -  And use the Refresh Prices Button
-I note that storing the user data , passwords and portfolio information should be stored in database and not locally on json
-This will be future functionality in SQL module.
+# Points to Note
+## SQL
 
+Use of CTE in Portfolio Aggregate Queries
 
+A Common Table Expression (CTE) in SQL is a temporary result set that you can define within a query using the WITH clause. It exists only for the duration of that query and is used to simplify complex queries by breaking them into more readable parts. CTEs are particularly useful when you need to write recursive queries or perform multi-step operations. A CTE can be referenced multiple times within the main query, which makes it easier to manage and maintain code, especially in complex joins, subqueries, or aggregations.
 
-![alt text](yahoo_image.png)
+One of the key benefits of CTEs is improved readability and organization. Instead of nesting subqueries, which can make the code difficult to follow, CTEs allow developers to structure their queries in a logical, step-by-step manner. Additionally, CTEs can improve performance by reducing redundant code, especially when the same complex subquery needs to be used multiple times in a query. Recursive CTEs, in particular, enable handling hierarchical or tree-structured data more efficiently, such as organizational charts or category hierarchies.
 
-A Sample Stock list is loaded As drop down using a .json File As input for DEMO purposes to make ease of use.
+### CTE
 
+![alt text](./app/static/CTE.png)
 
-7. Future functionality  - 
+### ERD
 
-Take the Stop Loss and Profit Price and evaluate these compared to the market price from Yahoo Finance showing user the current position.
+![alt text](./app/static/ERD.png)
 
-Enhance functionality of The refresh prices to fetch all stocks at once
-Move user details to SQL DB in PostgrSQL
+## JAVA use fetch to add / remove update the Database
+Fetch The response of of the Routed HTMLS file and then udate the portion of  the table to prevent full page refresh in full render_template
 
-![alt text](image.png)
+## HTML 
+
+Use of templates to updaate portions of the web pages 
+
+Dashboard_tbl.html
+Portfolio_rows.html
+
+### Example 
+
+![alt text](./app/static/fetch.png)

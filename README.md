@@ -91,7 +91,7 @@ bash
     flask run
 Open your browser and go to http://127.0.0.1:5000 to access the application.
 
-Application Structure
+## Application Structure
 
  
 
@@ -113,6 +113,63 @@ Key Routes
 /add_stock: Add a new stock to the portfolio (POST only).
 /remove_stock/<string:stock_code>: Remove a stock from the portfolio.
 Debugging
+
+# Features of Dashboard
+
+![alt text](./app/static/dashboard.png)
+
+## Y! -  Refresh Toggle
+ Turns on and off the fetch yahoo prices for The stocks in the portfolio
+ This toggle is controlled tith the Y! -  Refresh switch on the Dashboard(e.g., when adding stocks or using Search).
+    If this is set To ON the Application Will refresh all prices in the Portfolio when a new Stock is added
+    Alternatively you can leave it  off  - if an svg file has previoulsy been created it will show the data as of created date.
+ Turn on to retrieve Data to create the svg to show stock performance etc.
+
+## Stock Symbol - OnCLick
+ Once Data is refreshed from Yahoo -  this Will save the to the database while creating a svg xml  (also Saves this to the database for future retieval)
+
+![alt text](./app/static/svg_example.png)
+
+### Sample From DB
+
+![alt text](./app/static/db_svg_store.png)
+
+## Add Stocks
+
+### Select stock from Dropdown  -  
+    When selected the the buy Price Field will get the latest price from Yahoo Finance
+    Enter the Comment
+    Enter The amount of stocks to buy
+
+### Click Buy
+    Will Add the stock To the select portfolio
+    Reduce the amount of capital (volume * buy price)
+
+### Click Sell
+    Will add the amount back to the capital of the portfolio (volume * sell price)
+    Reduce the number of shares of that asset in the portfolio
+        If Ticker not in port folio  -  respond with flash
+        If Ticker is in portfolio but input volume > volume in portfolio the n respond
+
+### Click Refresh
+    Updates the Buy sell price from Yahoo
+
+ ![alt text](./app/static/buy_sell_refresh.png)
+
+
+# Portfolio UI
+
+## Fuctionality 
+
+![alt text](./app/static/portfolios.png)
+
+### Create portfolio - 
+    Add a Portfolio anem  and amount of capiltal you want To begin with
+
+### Portfolio Overview
+Select single portfolio or "All" from dropdown and click Refresh
+This will Show all portfolios with a "Details" toggle to expand each row in Accordian to show further details
+
 
 # Points to Note
 ## SQL

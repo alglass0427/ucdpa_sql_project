@@ -1,4 +1,4 @@
-# ucdpa_python_project
+# ucdpa_sql_project
 
 ## On Render
 Link to deployment
@@ -102,58 +102,26 @@ Key Routes
 /remove_stock/<string:stock_code>: Remove a stock from the portfolio.
 Debugging
 
-# Features of Dashboard
-
-![alt text](./app/static/dashboard.png)
-
-## Y! -  Refresh Toggle
- Turns on and off the fetch yahoo prices for The stocks in the portfolio
- This toggle is controlled tith the Y! -  Refresh switch on the Dashboard(e.g., when adding stocks or using Search).
-    If this is set To ON the Application Will refresh all prices in the Portfolio when a new Stock is added
-    Alternatively you can leave it  off  - if an svg file has previoulsy been created it will show the data as of created date.
- Turn on to retrieve Data to create the svg to show stock performance etc.
-
-## Stock Symbol - OnCLick
- Once Data is refreshed from Yahoo -  this Will save the to the database while creating a svg xml  (also Saves this to the database for future retieval)
-
-![alt text](./app/static/svg_example.png)
-
-## Add Stocks
-
-### Select stock from Dropdown  -  
-    When selected the the buy Price Field will get the latest price from Yahoo Finance
-    Enter the Comment
-    Enter The amount of stocks to buy
-
-### Click Buy
-    Will Add the stock To the select portfolio
-    Reduce the amount of capital (volume * buy price)
-
-### Click Sell
-    Will add the amount back to the capital of the portfolio (volume * sell price)
-    Reduce the number of shares of that asset in the portfolio
-        If Ticker not in port folio  -  respond with flash
-        If Ticker is in portfolio but input volume > volume in portfolio the n respond
-
-### Click Refresh
-    Updates the Buy sell price from Yahoo
-
- ![alt text](./app/static/buy_sell_refresh.png)
-
-
-# Portfolio UI
-
-## Fuctionality 
-
-![alt text](./app/static/portfolios.png)
-
-### Create portfolio - 
-    Add a Portfolio anem  and amount of capiltal you want To begin with
-
-### Portfolio Overview
-Select single portfolio or "All" from dropdown and click Refresh
-This will Show all portfolios with a "Details" toggle to expand each row in Accordian to show further details
+Points to Note
+The application defaults to using 'off' for yf_flag if not provided. 
+This toggle is controlled tith the Y! switch on the Dashboard(e.g., when adding stocks).
+If this is set To ON the Application Will refresh all prices in the Portfolio when a new Stock is added
+Alternatively you can leave it  off  , Add All stocks  -  And use the Refresh Prices Button
+I note that storing the user data , passwords and portfolio information should be stored in database and not locally on json
+This will be future functionality in SQL module.
 
 
 
+![alt text](yahoo_image.png)
 
+A Sample Stock list is loaded As drop down using a .json File As input for DEMO purposes to make ease of use.
+
+
+7. Future functionality  - 
+
+Take the Stop Loss and Profit Price and evaluate these compared to the market price from Yahoo Finance showing user the current position.
+
+Enhance functionality of The refresh prices to fetch all stocks at once
+Move user details to SQL DB in PostgrSQL
+
+![alt text](image.png)

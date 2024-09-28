@@ -32,7 +32,7 @@
     <tbody>
         {% for portflio,assets,asset in stocks %}
         {% if assets and asset.ticker != "CASH" %}
-        <tr>
+        <tr class = "text-center">
             <td class="d-none d-lg-table-cell">{{ loop.index }}</td>
             <td class = "modal_link">{{ asset.ticker }}</td>
             <td >{{ assets.no_of_trades }}</td>
@@ -84,10 +84,7 @@
     <div class="card mb-2 d-md-none">
         <div class="card-body">
             <div class="row border rounded mb-2">
-                <div class="col-12">
-                    <h5 class="card-title text-center border-bottom border-2 modal_link">{{ asset.ticker }}</h5>
-                    
-                </div>
+                <div class=" text-center border-bottom border-2 col-12 modal_link pb-1 pt-1">{{ asset.ticker }}</div>
             </div>   
 
 

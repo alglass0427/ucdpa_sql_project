@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
+# from insert import import_assets_from_csv
+# from insert_roles import add_roles
 # from datetime import timedelta
 from app.config import Config
 
@@ -16,6 +18,6 @@ def create_app():
         # Import routes, models, etc.
         from . import routes  # Import routes
         from .models import UserDetails, Portfolio, PortfolioAsset,Asset,Role,UserRole  # Import models
-        db.create_all()  # Create database tables
+        db.create_all()  # Create database tables        
 
     return app

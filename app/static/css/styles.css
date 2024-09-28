@@ -239,7 +239,16 @@ footer {
     background-color: #007bff;
   }
   
+.modal_link {
+    background-color: rgb(247, 121, 108) !important; /* Light color (default) */
+    color: whitesmoke;            /* Light text color (optional) */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
 
+.modal_link:hover {
+    background-color: #ffc107 !important; /* Highlight color (on hover) */
+    color: #212529;            /* Darker text color on hover (optional) */
+}
 
 
 @media (min-width: 576px) {

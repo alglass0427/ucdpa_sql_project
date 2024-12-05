@@ -424,6 +424,7 @@ def get_portfolio_data():
 
 @app.route('/get_portfolio_assets', methods=['GET','POST'])
 def get_portfolio_assets():
+    
     if not current_user.is_authenticated:
         return jsonify({"error": "User not authenticated"}), 401  # 401 Unauthorized
     
